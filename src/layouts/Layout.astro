@@ -1,4 +1,5 @@
 ---
+import StarfieldCanvas from '../components/starfield-canvas.astro'
 import '../styles/global.css'
 ---
 
@@ -10,10 +11,13 @@ import '../styles/global.css'
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <title>gontar.dev</title>
   </head>
   <body>
-    <slot />
+    <main class="flex flex-col px-7 py-10">
+      <StarfieldCanvas />
+      <slot />
+    </main>
   </body>
 </html>
 
