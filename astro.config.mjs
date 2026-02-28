@@ -8,5 +8,6 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  site: 'https://ashenoooone.github.io/ashenoooone-page/',
+  site: 'https://ashenoooone.github.io',
+  base: '/ashenoooone-page/',
 })
