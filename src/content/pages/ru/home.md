@@ -14,10 +14,6 @@ meta:
 #       - { text: платформу доставки, accent: gold, href: /projects/delivery-platform }
 #       - { text: бэкофис сети, accent: gold, href: /projects/pizzeria-backoffice }
 #       - { text: досье B2B, accent: gold, href: /projects/b2b-dossier }
-#   - label: поддерживаю
-#     items:
-#       - { text: npm-пакеты авторизации и промо, accent: green, href: /projects/npm-packages }
-#       - { text: шаблон frontend-модуля, accent: green, href: /projects/frontend-module-template }
   - label: пишу на
     tech: true
     items:

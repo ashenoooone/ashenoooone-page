@@ -33,7 +33,7 @@ const projects = defineCollection({
     teaser: z.string().optional(),
     /** Вводная строка 19px на странице проекта. */
     lead: z.string().optional(),
-    kind: z.enum(['product', 'library']),
+    kind: z.literal('product'),
     /** Правая колонка строки: годы, «поддерживаю», «GitHub →». */
     aside: z.string(),
     period: z.string().optional(),

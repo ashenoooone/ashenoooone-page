@@ -14,10 +14,6 @@ meta:
 #       - { text: a delivery platform, accent: gold, href: /projects/delivery-platform }
 #       - { text: a chain back office, accent: gold, href: /projects/pizzeria-backoffice }
 #       - { text: a B2B dossier, accent: gold, href: /projects/b2b-dossier }
-#   - label: maintaining
-#     items:
-#       - { text: auth and promo npm packages, accent: green, href: /projects/npm-packages }
-#       - { text: a frontend module template, accent: green, href: /projects/frontend-module-template }
   - label: writing in
     tech: true
     items:

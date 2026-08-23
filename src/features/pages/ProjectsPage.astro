@@ -1,7 +1,6 @@
 ---
 import type { Lang } from '../../i18n/ui'
 import ListGroup from '../../components/ui/ListGroup.astro'
-import { useTranslations } from '../../i18n/ui'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import { getPage, getProjects } from '../../lib/content'
 import ProjectRow from '../projects/ProjectRow.astro'
@@ -12,8 +11,6 @@ interface Props {
 
 const { lang } = Astro.props
 
-const t = useTranslations(lang)
-
 const page = await getPage('projects', lang)
 if (!page) {
   throw new Error(`Missing projects page content for "${lang}"`)
@@ -21,7 +18,6 @@ if (!page) {
 
 const projects = await getProjects(lang)
 const products = projects.filter(({ data }) => data.kind === 'product')
-const libraries = projects.filter(({ data }) => data.kind === 'library')
 ---
 
 <BaseLayout lang={lang} title={page.data.title} description={page.data.description}>
@@ -29,9 +25,5 @@ const libraries = projects.filter(({ data }) => data.kind === 'library')
 
   <ListGroup space="none">
     {products.map((project) => <ProjectRow project={project} lang={lang} density="roomy" showHighlights />)}
-  </ListGroup>
-
-  <ListGroup label={t('projects.libraries')} space="md">
-    {libraries.map((project) => <ProjectRow project={project} lang={lang} />)}
   </ListGroup>
 </BaseLayout>

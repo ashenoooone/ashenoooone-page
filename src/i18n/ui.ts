@@ -32,7 +32,6 @@ export const ui = {
     'home.work': 'работа',
     'home.blog': 'блог',
 
-    'projects.libraries': 'библиотеки и инструменты',
     'projects.back': '← все проекты',
     'projects.next': 'дальше',
     'projects.role': 'роль',
@@ -79,7 +78,6 @@ export const ui = {
     'home.work': 'work',
     'home.blog': 'blog',
 
-    'projects.libraries': 'libraries and tools',
     'projects.back': '← all projects',
     'projects.next': 'next',
     'projects.role': 'role',
