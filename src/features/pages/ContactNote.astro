@@ -1,0 +1,27 @@
+---
+import type { Lang } from '../../i18n/ui'
+import Link from '../../components/ui/Link.astro'
+import Text from '../../components/ui/Text.astro'
+import { site } from '../../config/site'
+import { useTranslations } from '../../i18n/ui'
+
+interface Props {
+  lang: Lang
+  /** Закрывающее предложение; ссылка на почту дописывается к нему. */
+  text?: string
+  /** `sm` добавляет отступ, который макеты оставляют между списком и этой строкой. */
+  space?: 'none' | 'sm'
+}
+
+const { lang, text, space = 'none' } = Astro.props
+
+const t = useTranslations(lang)
+---
+
+{
+  text && (
+    <Text variant="body" class={space === 'sm' ? 'pt-[var(--outro-top)]' : undefined}>
+      {text} <Link href={`mailto:${site.email}`}>{t('cta.write')}</Link>.
+    </Text>
+  )
+}

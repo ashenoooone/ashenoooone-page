@@ -1,0 +1,18 @@
+---
+import type { Accent } from '../../lib/accents'
+import { accentBg } from '../../lib/accents'
+
+interface Props {
+  /** Роль цвета. Между светлой и тёмной темой меняется сама. */
+  accent?: Accent
+  /** 7px рядом с обычным текстом, 6px внутри моношрифтовых мета-строк. */
+  size?: 'sm' | 'md'
+  class?: string
+}
+
+const { accent = 'gold', size = 'md', class: className } = Astro.props
+---
+
+<span
+  aria-hidden="true"
+  class:list={['flex-none', size === 'sm' ? 'size-1.5' : 'size-[7px]', accentBg[accent], className]}></span>

@@ -1,0 +1,50 @@
+---
+/**
+ * Вся типографика дизайна берётся из этого списка.
+ * Новый вид — новый вариант здесь, а не разовый класс.
+ */
+const VARIANTS = {
+  /** 40px — заголовок страницы */
+  display: 'font-sans text-display font-medium tracking-[-0.02em] text-fg-display',
+  /** 32px — число метрики */
+  stat: 'font-sans text-stat font-medium tracking-[-0.02em] text-fg-display',
+  /** 21px mono — логотип */
+  logo: 'font-mono text-logo text-fg-strong',
+  /** 19px — вводная строка страницы */
+  lead: 'text-lead text-fg-lead',
+  /** 16px — обычный абзац */
+  body: 'text-body text-fg-soft',
+  /** 16px — выделенная строка внутри текстового блока */
+  bodyStrong: 'text-body text-fg-strong',
+  /** 15px — описание под заголовком строки */
+  row: 'text-row text-fg-dim',
+  /** 15px — заголовок строки */
+  rowTitle: 'text-row text-fg-strong',
+  caption: 'text-caption text-fg-muted',
+  /** 13px — пункт навигации */
+  nav: 'text-nav text-fg-muted',
+  /** 12px mono, с разрядкой — подпись секции */
+  label: 'font-mono text-meta tracking-[0.04em] text-fg-faint',
+  /** 12px mono — дата, тег, единица */
+  meta: 'font-mono text-meta text-fg-faint',
+  /** 14px mono — почта и прочие литералы */
+  mono: 'font-mono text-caption text-fg-strong',
+  /** 18px Lora italic — названия книг и статей */
+  quote: 'font-reading italic text-quote text-fg',
+} as const
+
+type Variant = keyof typeof VARIANTS
+
+interface Props {
+  variant?: Variant
+  as?: string
+  class?: string
+  [key: string]: unknown
+}
+
+const { variant = 'body', as: Tag = 'div', class: className, ...rest } = Astro.props
+---
+
+<Tag class:list={[VARIANTS[variant], className]} {...rest}>
+  <slot />
+</Tag>

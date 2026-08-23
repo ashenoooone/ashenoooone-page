@@ -1,0 +1,17 @@
+---
+import NotePage from '../../../features/pages/NotePage.astro'
+import { getNotes, slugOf } from '../../../lib/content'
+
+export async function getStaticPaths() {
+  const notes = await getNotes('en')
+
+  return notes.map((note) => ({
+    params: { slug: slugOf(note) },
+    props: { note },
+  }))
+}
+
+const { note } = Astro.props
+---
+
+<NotePage lang="en" note={note} />

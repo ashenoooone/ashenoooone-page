@@ -1,0 +1,156 @@
+---
+import type { Lang } from '../../i18n/ui'
+import type { Project } from '../../lib/content'
+import { render } from 'astro:content'
+import Divider from '../../components/ui/Divider.astro'
+import DotItem from '../../components/ui/DotItem.astro'
+import Figure from '../../components/ui/Figure.astro'
+import FigureGrid from '../../components/ui/FigureGrid.astro'
+import Link from '../../components/ui/Link.astro'
+import ListGroup from '../../components/ui/ListGroup.astro'
+import ListRow from '../../components/ui/ListRow.astro'
+import MetaList from '../../components/ui/MetaList.astro'
+import MetaRow from '../../components/ui/MetaRow.astro'
+import Prose from '../../components/ui/Prose.astro'
+import Section from '../../components/ui/Section.astro'
+import Stat from '../../components/ui/Stat.astro'
+import StatGrid from '../../components/ui/StatGrid.astro'
+import Text from '../../components/ui/Text.astro'
+import { localeUrl } from '../../config/site'
+import { otherLang, useTranslations } from '../../i18n/ui'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getPage, getProjectPages, slugOf } from '../../lib/content'
+import { accentForTech } from '../../lib/accents'
+import ContactNote from './ContactNote.astro'
+
+interface Props {
+  lang: Lang
+  project: Project
+}
+
+const { lang, project } = Astro.props
+const { data } = project
+
+const t = useTranslations(lang)
+
+const { Content } = await render(project)
+
+const page = await getPage('projects', lang)
+
+/** Как и у заметок: страница другого языка есть не всегда. */
+const translated = (await getProjectPages(otherLang(lang))).some((entry) => slugOf(entry) === slugOf(project))
+
+const siblings = await getProjectPages(lang)
+const index = siblings.findIndex((entry) => entry.id === project.id)
+const next = [...siblings.slice(index + 1), ...siblings.slice(0, index)].slice(0, 2)
+
+/** Вертикальные снимки встают рядом; всё, что шире, занимает колонку целиком. */
+const wide = data.gallery.filter((item) => item.ratio !== '3/4')
+const tall = data.gallery.filter((item) => item.ratio === '3/4')
+---
+
+<BaseLayout lang={lang} title={data.title} description={data.summary} {translated}>
+  <Section space="none" gap="text">
+    <Link href={localeUrl('/projects', lang)} variant="quiet">{t('projects.back')}</Link>
+
+    <Text variant="display" as="h1">{data.title}</Text>
+    {data.lead && <Text variant="lead">{data.lead}</Text>}
+
+    <MetaList>
+      {
+        data.role.length > 0 && (
+          <MetaRow label={t('projects.role')}>
+            <div class="flex flex-wrap gap-x-3.5 gap-y-1.5">
+              {data.role.map((item) => (
+                <DotItem accent={item.accent} class="text-fg-strong">
+                  {item.text}
+                </DotItem>
+              ))}
+            </div>
+          </MetaRow>
+        )
+      }
+      {
+        data.team.length > 0 && (
+          <MetaRow label={t('projects.team')}>
+            <div class="flex flex-wrap gap-x-3.5 gap-y-1.5 text-fg-soft">
+              {data.team.map((member) => (
+                <span class="flex-none whitespace-nowrap">{member}</span>
+              ))}
+            </div>
+          </MetaRow>
+        )
+      }
+      {
+        data.stack.length > 0 && (
+          <MetaRow label={t('projects.stack')}>
+            <div class="flex flex-wrap gap-x-3.5 gap-y-1.5">
+              {data.stack.map((tech) => (
+                <DotItem accent={accentForTech(tech)} size="sm" tech={tech} class="text-fg-soft">
+                  {tech}
+                </DotItem>
+              ))}
+            </div>
+          </MetaRow>
+        )
+      }
+      {
+        data.period && (
+          <MetaRow label={t('projects.period')}>
+            <span class="text-fg-soft">{data.period}</span>
+          </MetaRow>
+        )
+      }
+    </MetaList>
+  </Section>
+
+  {
+    data.stats.length > 0 && (
+      <StatGrid>
+        {data.stats.map((stat) => (
+          <Stat value={stat.value} label={stat.label} />
+        ))}
+      </StatGrid>
+    )
+  }
+
+  <Prose class={data.stats.length > 0 ? '' : 'pt-block-md'}>
+    <Content />
+  </Prose>
+
+  {
+    data.gallery.length > 0 && (
+      <Section label={t('projects.gallery')} space="md" gap="tight">
+        {wide.map((item) => (
+          <Figure src={item.src} alt={item.alt} caption={item.caption} ratio={item.ratio} />
+        ))}
+        {tall.length > 0 && (
+          <FigureGrid class="my-0">
+            {tall.map((item) => (
+              <Figure src={item.src} alt={item.alt} caption={item.caption} ratio={item.ratio} />
+            ))}
+          </FigureGrid>
+        )}
+      </Section>
+    )
+  }
+
+  <Divider />
+
+  {
+    next.length > 0 && (
+      <ListGroup label={t('projects.next')} space="none">
+        {next.map((entry) => (
+          <ListRow
+            title={entry.data.title}
+            aside={entry.data.aside}
+            href={localeUrl(`/projects/${slugOf(entry)}`, lang)}
+            accent={entry.data.kind === 'product' ? 'gold' : 'green'}
+          />
+        ))}
+      </ListGroup>
+    )
+  }
+
+  <ContactNote lang={lang} text={page?.data.outro} space="sm" />
+</BaseLayout>

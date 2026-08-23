@@ -1,0 +1,192 @@
+---
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+---
+
+<!--
+  Обёртка отрендеренного Markdown. Правила ниже — единственное место, где
+  стилизуются голые селекторы элементов; во всём остальном дизайн держится
+  на компонентах.
+-->
+<div class:list={['prose-note flex flex-col gap-flow', className]}>
+  <slot />
+</div>
+
+<style is:global>
+  .prose-note > * {
+    margin: 0;
+  }
+
+  .prose-note p {
+    color: var(--fg-soft);
+  }
+
+  .prose-note h2,
+  .prose-note h3 {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--fg-faint);
+    padding-top: var(--gap-flow);
+  }
+
+  .prose-note h2 + *,
+  .prose-note h3 + * {
+    margin-top: 0;
+  }
+
+  .prose-note a {
+    border-bottom: 1px solid var(--line-underline);
+    padding-bottom: 1px;
+    transition: border-color 150ms;
+  }
+
+  .prose-note a:hover {
+    border-color: var(--line-underline-hover);
+  }
+
+  .prose-note strong {
+    color: var(--fg-strong);
+    font-weight: 500;
+  }
+
+  .prose-note em {
+    font-family: var(--font-reading);
+    font-style: italic;
+    font-size: var(--text-quote);
+    color: var(--fg);
+  }
+
+  .prose-note ul,
+  .prose-note ol {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 0;
+    list-style: none;
+    color: var(--fg-soft);
+  }
+
+  .prose-note ul > li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+  }
+
+  .prose-note ul > li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    margin-top: 0.85em;
+    background: var(--accent);
+  }
+
+  .prose-note ol {
+    counter-reset: prose-note;
+  }
+
+  .prose-note ol > li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    counter-increment: prose-note;
+  }
+
+  .prose-note ol > li::before {
+    content: counter(prose-note);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--fg-faint);
+  }
+
+  .prose-note blockquote {
+    border-left: 1px solid var(--line-rule);
+    padding-left: 16px;
+    color: var(--fg-dim);
+  }
+
+  @media (width >= 40rem) {
+    .prose-note blockquote {
+      padding-left: 20px;
+    }
+  }
+
+  .prose-note code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    color: var(--fg-strong);
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    padding: 1px 5px;
+    /* Идентификатор длиннее колонки переносится, а не распирает страницу. */
+    overflow-wrap: anywhere;
+  }
+
+  .prose-note pre {
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    padding: 14px 16px;
+    max-width: 100%;
+    overflow-x: auto;
+    font-size: var(--text-row);
+    line-height: 1.7;
+  }
+
+  @media (width >= 40rem) {
+    .prose-note pre {
+      padding: 18px 20px;
+    }
+  }
+
+  .prose-note pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+    /* Код внутри pre скроллится целиком, переносить его нельзя. */
+    overflow-wrap: normal;
+  }
+
+  .prose-note img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+  }
+
+  .prose-note hr {
+    width: 52px;
+    height: 1px;
+    border: 0;
+    background: var(--line-rule);
+    margin: 34px 0 8px;
+  }
+
+  /* `display: block` даёт таблице свой горизонтальный скролл:
+     на телефоне она уезжает внутри себя, а не растягивает страницу. */
+  .prose-note table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: var(--text-row);
+  }
+
+  .prose-note th,
+  .prose-note td {
+    text-align: left;
+    padding: 10px 14px 10px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .prose-note th {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--fg-faint);
+  }
+</style>

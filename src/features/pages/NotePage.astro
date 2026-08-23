@@ -1,0 +1,97 @@
+---
+import type { Lang } from '../../i18n/ui'
+import type { Note } from '../../lib/content'
+import { render } from 'astro:content'
+import Divider from '../../components/ui/Divider.astro'
+import DotItem from '../../components/ui/DotItem.astro'
+import Link from '../../components/ui/Link.astro'
+import ListGroup from '../../components/ui/ListGroup.astro'
+import Prose from '../../components/ui/Prose.astro'
+import Section from '../../components/ui/Section.astro'
+import Text from '../../components/ui/Text.astro'
+import { localeUrl } from '../../config/site'
+import { topicAccent, topicLabel } from '../../config/topics'
+import { otherLang, useTranslations } from '../../i18n/ui'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getNotes, getPage, slugOf } from '../../lib/content'
+import { formatDate, isoDate, readingMinutes } from '../../lib/format'
+import NoteRow from '../notes/NoteRow.astro'
+
+interface Props {
+  lang: Lang
+  note: Note
+}
+
+const { lang, note } = Astro.props
+const { data } = note
+
+const t = useTranslations(lang)
+
+const { Content } = await render(note)
+
+const minutes = readingMinutes(note.body ?? '')
+const page = await getPage('blog', lang)
+
+/** Заметка может выйти только на одном языке; тогда у неё нет альтернативы. */
+const slug = slugOf(note)
+const translated = (await getNotes(otherLang(lang))).some((entry) => slugOf(entry) === slug)
+
+const related = (await getNotes(lang))
+  .filter((entry) => entry.data.topic === data.topic && entry.id !== note.id)
+  .slice(0, 3)
+---
+
+<BaseLayout
+  lang={lang}
+  title={data.title}
+  description={data.description}
+  article={{ published: data.date, keywords: topicLabel(data.topic, lang) }}
+  {translated}
+>
+  <Section space="none" gap="text">
+    <Link href={localeUrl('/blog', lang)} variant="quiet">{t('blog.back')}</Link>
+
+    <Text variant="display" as="h1">{data.title}</Text>
+
+    <div class="flex flex-wrap items-center gap-x-3.5 gap-y-1.5">
+      <Text variant="meta" as="time" datetime={isoDate(data.date)}>
+        {formatDate(data.date, lang)}
+      </Text>
+      <DotItem
+        href={localeUrl(`/blog/topic/${data.topic}`, lang)}
+        accent={topicAccent(data.topic)}
+        size="sm"
+        class="font-mono text-meta text-fg-faint"
+      >
+        {topicLabel(data.topic, lang)}
+      </DotItem>
+      <Text variant="meta" as="span">{`${minutes} ${t('blog.readingTime')}`}</Text>
+    </div>
+
+    <Text variant="lead">{data.description}</Text>
+  </Section>
+
+  <Prose class="pt-block-sm">
+    <Content />
+  </Prose>
+
+  <Divider />
+
+  {
+    related.length > 0 && (
+      <ListGroup label={t('blog.related')} space="none">
+        {related.map((entry) => (
+          <NoteRow note={entry} lang={lang} compact />
+        ))}
+      </ListGroup>
+    )
+  }
+
+  {
+    page?.data.outro && (
+      <Text variant="body" class="pt-[var(--outro-top)]">
+        {page.data.outro}
+      </Text>
+    )
+  }
+</BaseLayout>

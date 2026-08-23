@@ -1,0 +1,85 @@
+---
+import type { Lang } from '../../i18n/ui'
+import { render } from 'astro:content'
+import ContactBlock from '../../components/layout/ContactBlock.astro'
+import Divider from '../../components/ui/Divider.astro'
+import Dot from '../../components/ui/Dot.astro'
+import HireButton from '../../components/ui/HireButton.astro'
+import ListGroup from '../../components/ui/ListGroup.astro'
+import MetaRow from '../../components/ui/MetaRow.astro'
+import Prose from '../../components/ui/Prose.astro'
+import Section from '../../components/ui/Section.astro'
+import Text from '../../components/ui/Text.astro'
+import { site } from '../../config/site'
+import { useTranslations } from '../../i18n/ui'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getNotes, getPage, getProjects } from '../../lib/content'
+import { withExperience } from '../../lib/experience'
+import NoteRow from '../notes/NoteRow.astro'
+import ProjectRow from '../projects/ProjectRow.astro'
+import MetaBlock from './MetaBlock.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+
+const t = useTranslations(lang)
+
+const page = await getPage('home', lang)
+if (!page) {
+  throw new Error(`Missing home page content for "${lang}"`)
+}
+
+const { Content } = await render(page)
+
+const projects = (await getProjects(lang)).filter(({ data }) => data.kind === 'product').slice(0, 3)
+const notes = (await getNotes(lang)).slice(0, 3)
+---
+
+<BaseLayout lang={lang}>
+  <Section space="none" gap="text">
+    <Text variant="lead" as="h1">{withExperience(page.data.lead ?? '', lang)}</Text>
+
+    <MetaBlock rows={page.data.meta} lang={lang} />
+
+    <Prose><Content /></Prose>
+  </Section>
+
+  <ListGroup label={t('home.work')} space="lg">
+    {projects.map((project) => <ProjectRow project={project} lang={lang} short />)}
+  </ListGroup>
+
+  {
+    notes.length > 0 && (
+      <ListGroup label={t('home.blog')} space="md">
+        {notes.map((note) => (
+          <NoteRow note={note} lang={lang} compact />
+        ))}
+      </ListGroup>
+    )
+  }
+
+  <Divider />
+
+  <ContactBlock lang={lang} />
+
+  <MetaRow class="pt-4">
+    <div class="flex flex-col items-start gap-1.5">
+      <HireButton href={`mailto:${site.email}`} label={t('cta.write')} />
+      <Text variant="meta" as="p" class="flex items-center gap-2.5">
+        <Dot accent="green" size="sm" class="animate-pulse-live" />
+        {t('cta.status')}
+      </Text>
+    </div>
+  </MetaRow>
+
+  {
+    page.data.outro && (
+      <Text variant="body" class="pt-[var(--outro-top)]">
+        {page.data.outro}
+      </Text>
+    )
+  }
+</BaseLayout>

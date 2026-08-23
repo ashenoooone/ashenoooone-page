@@ -1,0 +1,17 @@
+---
+interface Props {
+  /** `short` — линия 52px между блоками страницы, `full` — во всю колонку. */
+  width?: 'short' | 'full'
+  class?: string
+}
+
+const { width = 'short', class: className } = Astro.props
+---
+
+<hr
+  class:list={[
+    'h-px border-0 bg-rule',
+    width === 'short' ? 'mt-[var(--rule-top)] mb-[var(--rule-bottom)] w-13' : 'my-[var(--rule-bottom)] w-full',
+    className,
+  ]}
+/>

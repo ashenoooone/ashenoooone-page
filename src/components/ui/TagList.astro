@@ -1,0 +1,19 @@
+---
+interface Props {
+  /** `sm` — под плотные моношрифтовые мета-строки под заголовками строк. */
+  size?: 'sm' | 'md'
+  class?: string
+}
+
+const { size = 'md', class: className } = Astro.props
+---
+
+<div
+  class:list={[
+    'flex flex-wrap',
+    size === 'sm' ? 'gap-x-3.5 gap-y-1 font-mono text-meta text-fg-faint' : 'gap-x-3.5 gap-y-1.5',
+    className,
+  ]}
+>
+  <slot />
+</div>

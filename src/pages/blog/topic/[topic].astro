@@ -1,0 +1,15 @@
+---
+import TopicPage from '../../../features/pages/TopicPage.astro'
+import { TOPIC_KEYS } from '../../../config/topics'
+
+export function getStaticPaths() {
+  return TOPIC_KEYS.map((topic) => ({
+    params: { topic },
+    props: { topic },
+  }))
+}
+
+const { topic } = Astro.props
+---
+
+<TopicPage lang="ru" topic={topic} />

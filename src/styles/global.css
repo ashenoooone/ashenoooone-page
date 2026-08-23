@@ -1,0 +1,167 @@
+@import './fonts.css';
+@import './tokens.css';
+@import './rhythm.css';
+@import 'tailwindcss';
+
+/* ============================================================
+   Тема Tailwind — связывает токены дизайна с utility-классами.
+   `inline` сохраняет ссылку на var(), поэтому темы меняются в рантайме.
+   ============================================================ */
+
+@theme {
+  /* Обе с кириллицей: у Instrument Sans и Newsreader её не было,
+     и русские страницы уезжали на системный фолбэк. */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-reading: 'Lora', Georgia, serif;
+
+  /* шкала типографики, повторяет макеты 1:1 */
+  --text-meta: 0.75rem; /* 12 — моношрифтовые подписи, даты */
+  --text-meta--line-height: 1.6;
+  --text-nav: 0.8125rem;
+  --text-nav--line-height: 1.6;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.6;
+  --text-row: 0.9375rem; /* 15 — описания строк, мета-строки */
+  --text-row--line-height: 1.8;
+  --text-body: 1rem; /* 16 — по умолчанию на странице */
+  --text-body--line-height: 1.8;
+  --text-quote: 1.125rem; /* 18 — Lora italic */
+  --text-quote--line-height: 1.6;
+  /* 19 на широком экране, 17 на телефоне — вводная строка */
+  --text-lead: clamp(1.0625rem, 0.9rem + 0.7vw, 1.1875rem);
+  --text-lead--line-height: 1.8;
+  --text-logo: 1.3125rem;
+  --text-logo--line-height: 1.2;
+  /* 32 → 28 */
+  --text-stat: clamp(1.75rem, 1.4rem + 1.5vw, 2rem);
+  --text-stat--line-height: 1.1;
+  /* 40 на широком экране, 31 на телефоне — заголовок страницы */
+  --text-display: clamp(1.9375rem, 1.35rem + 2.5vw, 2.5rem);
+  --text-display--line-height: 1.2;
+
+  /* раскладка */
+  --container-reading: 680px;
+  --spacing-label: 128px; /* колонка подписей в мета-строках */
+
+  /* Живой статус: точка дышит, а не мигает — сигнал «прямо сейчас»,
+     а не тревога. Гасится до 35%, полностью не исчезает. */
+  --animate-pulse-live: pulse-live 2.4s ease-in-out infinite;
+
+  @keyframes pulse-live {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+}
+
+/* Ритм из rhythm.css — через `inline`, чтобы ссылка на var() дожила до
+   рантайма и отступы можно было переключать одним атрибутом на <html>. */
+@theme inline {
+  --spacing-block-lg: var(--block-lg);
+  --spacing-block-md: var(--block-md);
+  --spacing-block-sm: var(--block-sm);
+  --spacing-flow: var(--gap-flow);
+  --spacing-stack: var(--gap-stack);
+  --spacing-band: var(--band-y);
+  --spacing-row-compact: var(--row-compact);
+  --spacing-row-default: var(--row-default);
+  --spacing-row-roomy: var(--row-roomy);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-raised: var(--bg-raised);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-rule: var(--line-rule);
+  --color-underline: var(--line-underline);
+  --color-underline-hover: var(--line-underline-hover);
+
+  --color-fg: var(--fg);
+  --color-fg-display: var(--fg-display);
+  --color-fg-lead: var(--fg-lead);
+  --color-fg-strong: var(--fg-strong);
+  --color-fg-soft: var(--fg-soft);
+  --color-fg-dim: var(--fg-dim);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-fg-quiet: var(--fg-quiet);
+  --color-fg-invert: var(--fg-invert);
+
+  --color-accent: var(--accent);
+  --color-dot-gold: var(--dot-gold);
+  --color-dot-green: var(--dot-green);
+  --color-dot-moss: var(--dot-moss);
+  --color-dot-red: var(--dot-red);
+  --color-dot-rust: var(--dot-rust);
+  --color-dot-orange: var(--dot-orange);
+  --color-dot-blue: var(--dot-blue);
+  --color-dot-indigo: var(--dot-indigo);
+  --color-dot-teal: var(--dot-teal);
+  --color-dot-gray: var(--dot-gray);
+  --color-dot-silver: var(--dot-silver);
+}
+
+/* Явный выбор перебивает настройку ОС. */
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--bg);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    /* svh, иначе адресная строка мобильного браузера крадёт кусок экрана. */
+    min-height: 100vh;
+    min-height: 100svh;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    /* Длинная ссылка или идентификатор не должны растягивать колонку. */
+    overflow-wrap: break-word;
+  }
+
+  a {
+    color: var(--fg-strong);
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: var(--selection-bg);
+    color: var(--selection-fg);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+/* Диагональная штриховка для плейсхолдеров картинок. */
+@utility bg-hatch {
+  background: repeating-linear-gradient(135deg, var(--hatch-a) 0 8px, var(--hatch-b) 8px 16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

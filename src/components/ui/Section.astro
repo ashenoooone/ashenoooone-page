@@ -1,0 +1,33 @@
+---
+import Text from './Text.astro'
+
+interface Props {
+  label?: string
+  id?: string
+  /** Вертикальный ритм между блоками, прямо из макетов. */
+  space?: 'none' | 'sm' | 'md' | 'lg'
+  gap?: 'tight' | 'text'
+  class?: string
+}
+
+const { label, id, space = 'lg', gap = 'tight', class: className } = Astro.props
+
+/** Значения живут в rhythm.css и сжимаются на телефоне сами. */
+const SPACE = {
+  none: '',
+  sm: 'pt-block-sm',
+  md: 'pt-block-md',
+  lg: 'pt-block-lg',
+} as const
+---
+
+<section id={id} class:list={['flex flex-col', gap === 'text' ? 'gap-flow' : 'gap-stack', SPACE[space], className]}>
+  {
+    label && (
+      <Text variant="label" class="pb-2">
+        {label}
+      </Text>
+    )
+  }
+  <slot />
+</section>

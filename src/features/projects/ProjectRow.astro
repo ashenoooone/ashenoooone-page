@@ -1,0 +1,47 @@
+---
+import type { Lang } from '../../i18n/ui'
+import type { Project } from '../../lib/content'
+import DotItem from '../../components/ui/DotItem.astro'
+import ListRow from '../../components/ui/ListRow.astro'
+import TagList from '../../components/ui/TagList.astro'
+import { localeUrl } from '../../config/site'
+import { slugOf } from '../../lib/content'
+
+interface Props {
+  project: Project
+  lang: Lang
+  /** `teaser` на главной, более полный `summary` — на странице проектов. */
+  short?: boolean
+  density?: 'compact' | 'default' | 'roomy'
+  /** Хайлайты появляются только там, где для них есть место. */
+  showHighlights?: boolean
+}
+
+const { project, lang, short = false, density = 'default', showHighlights = false } = Astro.props
+const { data } = project
+
+const href = data.externalUrl ?? localeUrl(`/projects/${slugOf(project)}`, lang)
+const description = short ? (data.teaser ?? data.summary) : data.summary
+const highlights = showHighlights ? data.highlights : []
+---
+
+<ListRow
+  title={data.title}
+  description={description}
+  aside={data.aside}
+  href={href}
+  accent={data.kind === 'product' ? 'gold' : 'green'}
+  density={density}
+>
+  {
+    highlights.length > 0 && (
+      <TagList slot="meta" size="sm">
+        {highlights.map((highlight) => (
+          <DotItem accent={highlight.accent} size="sm">
+            {highlight.label}
+          </DotItem>
+        ))}
+      </TagList>
+    )
+  }
+</ListRow>

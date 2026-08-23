@@ -1,0 +1,56 @@
+---
+import type { Topic } from '../../config/topics'
+import type { Lang } from '../../i18n/ui'
+import Link from '../../components/ui/Link.astro'
+import ListGroup from '../../components/ui/ListGroup.astro'
+import Section from '../../components/ui/Section.astro'
+import Text from '../../components/ui/Text.astro'
+import { localeUrl } from '../../config/site'
+import { topicLabel } from '../../config/topics'
+import { useTranslations } from '../../i18n/ui'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getNotes } from '../../lib/content'
+import { byYear } from '../../lib/content'
+import NoteRow from '../notes/NoteRow.astro'
+
+interface Props {
+  lang: Lang
+  topic: Topic
+}
+
+const { lang, topic } = Astro.props
+
+const t = useTranslations(lang)
+const label = topicLabel(topic, lang)
+const lead = t('blog.topicLead').replace('{topic}', label)
+
+const notes = (await getNotes(lang)).filter((note) => note.data.topic === topic)
+const years = byYear(notes)
+---
+
+<BaseLayout lang={lang} title={label} description={lead}>
+  <Section space="none" gap="text">
+    <Link href={localeUrl('/blog', lang)} variant="quiet">{t('blog.back')}</Link>
+
+    <Text variant="display" as="h1">{label}</Text>
+    <Text variant="lead">{lead}</Text>
+  </Section>
+
+  {
+    years.map((group, index) => (
+      <ListGroup label={String(group.year)} space={index === 0 ? 'lg' : 'md'}>
+        {group.notes.map((note) => (
+          <NoteRow note={note} lang={lang} />
+        ))}
+      </ListGroup>
+    ))
+  }
+
+  {
+    notes.length === 0 && (
+      <Text variant="body" class="pt-11">
+        {t('blog.empty')}
+      </Text>
+    )
+  }
+</BaseLayout>

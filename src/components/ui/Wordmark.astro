@@ -1,0 +1,18 @@
+---
+import { site } from '../../config/site'
+import Text from './Text.astro'
+---
+
+<Text variant="logo" as="span"
+  ><span class="brace" aria-hidden="true">&#123;</span>{site.wordmark}<span class="brace" aria-hidden="true"
+    >&#125;</span
+  ></Text
+>
+
+<style>
+  /* Скобки приглушены: знак читается как «rg»,
+     а фигурные скобки остаются рамкой, а не частью имени. */
+  .brace {
+    color: var(--fg-faint);
+  }
+</style>

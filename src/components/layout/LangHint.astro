@@ -1,0 +1,59 @@
+---
+import type { Lang } from '../../i18n/ui'
+import { langLabel, useTranslations } from '../../i18n/ui'
+import Dot from '../ui/Dot.astro'
+
+interface Props {
+  /** Язык страницы, на которую ведёт подсказка. */
+  lang: Lang
+  href: string
+}
+
+const { lang, href } = Astro.props
+
+/** Читает подсказку тот, кому удобнее другой язык, — значит она на нём и написана. */
+const t = useTranslations(lang)
+---
+
+<aside
+  hidden
+  data-lang-hint={lang}
+  class="flex flex-wrap items-center gap-x-3 gap-y-1 pt-6 font-mono text-meta text-fg-faint sm:pt-7"
+>
+  <Dot accent="gold" size="sm" />
+  <span>{t('lang.hint')}</span>
+  <a
+    href={href}
+    hreflang={lang}
+    data-lang-switch={lang}
+    class="border-b border-underline pb-px text-fg-strong transition-colors hover:border-underline-hover"
+  >
+    {t('lang.hintOpen')} · {langLabel[lang]}
+  </a>
+  <button type="button" data-lang-dismiss class="transition-colors hover:text-fg-strong">
+    {t('lang.hintDismiss')}
+  </button>
+</aside>
+
+<script is:inline>
+  // Автоматический редирект по языку Google трактует как склейку версий, поэтому
+  // выбор остаётся за человеком: подсказка всплывает, когда язык браузера не
+  // совпадает со страницей и явного выбора ещё не было.
+  {
+    const hint = document.querySelector('[data-lang-hint]')
+
+    if (hint && !localStorage.getItem('lang')) {
+      const tags = navigator.languages?.length ? navigator.languages : [navigator.language]
+      const preferred = tags.some((tag) => /^ru\b/i.test(tag ?? '')) ? 'ru' : 'en'
+
+      if (preferred === hint.dataset.langHint) {
+        hint.hidden = false
+      }
+    }
+
+    hint?.querySelector('[data-lang-dismiss]')?.addEventListener('click', () => {
+      localStorage.setItem('lang', document.documentElement.lang)
+      hint.hidden = true
+    })
+  }
+</script>

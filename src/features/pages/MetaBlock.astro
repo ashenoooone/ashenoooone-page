@@ -1,0 +1,53 @@
+---
+import type { Accent } from '../../lib/accents'
+import type { Lang } from '../../i18n/ui'
+import { localeUrl } from '../../config/site'
+import MetaList from '../../components/ui/MetaList.astro'
+import MetaRow from '../../components/ui/MetaRow.astro'
+import DotItem from '../../components/ui/DotItem.astro'
+import { accentForTech } from '../../lib/accents'
+
+interface Item {
+  text: string
+  accent?: Accent
+  href?: string
+}
+
+interface Row {
+  label: string
+  tech: boolean
+  items: Item[]
+}
+
+interface Props {
+  rows: Row[]
+  lang: Lang
+}
+
+const { rows, lang } = Astro.props
+
+/** Строки технологий читаются тихим списком: точки 6px, цвет берётся из названия. */
+const itemAccent = (item: Item, tech: boolean): Accent => item.accent ?? (tech ? accentForTech(item.text) : 'gold')
+---
+
+<MetaList>
+  {
+    rows.map((row) => (
+      <MetaRow label={row.label}>
+        <div class="flex flex-wrap gap-x-3.5 gap-y-1.5">
+          {row.items.map((item) => (
+            <DotItem
+              href={item.href ? localeUrl(item.href, lang) : undefined}
+              accent={itemAccent(item, row.tech)}
+              size={row.tech ? 'sm' : 'md'}
+              tech={row.tech ? item.text : undefined}
+              class={row.tech ? 'text-fg-soft' : 'text-fg-strong'}
+            >
+              {item.text}
+            </DotItem>
+          ))}
+        </div>
+      </MetaRow>
+    ))
+  }
+</MetaList>

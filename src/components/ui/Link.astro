@@ -1,0 +1,37 @@
+---
+interface Props {
+  href: string
+  /**
+   * inline — подчёркнутая ссылка внутри текста
+   * nav    — приглушённый пункт верхней навигации
+   * quiet  — моно, низкий контраст (ссылки назад, переключатель языка)
+   * bare   — без оформления, для ссылок, оборачивающих целые блоки
+   */
+  variant?: 'inline' | 'nav' | 'quiet' | 'bare'
+  current?: boolean
+  class?: string
+  [key: string]: unknown
+}
+
+const { href, variant = 'inline', current = false, class: className, ...rest } = Astro.props
+
+const VARIANTS = {
+  inline: 'border-b border-underline pb-px transition-colors hover:border-underline-hover',
+  nav: 'text-nav transition-colors hover:text-fg-strong',
+  quiet: 'font-mono text-meta tracking-[0.04em] transition-colors hover:text-fg-strong',
+  bare: '',
+} as const
+
+const isExternal = /^https?:\/\//.test(href)
+---
+
+<a
+  href={href}
+  aria-current={current ? 'page' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  target={isExternal ? '_blank' : undefined}
+  class:list={[VARIANTS[variant], variant !== 'inline' && (current ? 'text-fg-strong' : 'text-fg-muted'), className]}
+  {...rest}
+>
+  <slot />
+</a>

@@ -1,0 +1,31 @@
+---
+import type { Accent } from '../../lib/accents'
+import Dot from './Dot.astro'
+
+interface Props {
+  href?: string
+  accent?: Accent
+  /** `md` — кнопка в героблоке, `sm` — та, что стоит в навигации. */
+  size?: 'sm' | 'md'
+  class?: string
+}
+
+const { href, accent = 'green', size = 'md', class: className } = Astro.props
+const Tag = href ? 'a' : 'span'
+const isExternal = href ? /^https?:\/\//.test(href) : false
+---
+
+<Tag
+  href={href}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  target={isExternal ? '_blank' : undefined}
+  class:list={[
+    'inline-flex flex-none items-center whitespace-nowrap border border-line-strong text-fg-strong transition-colors',
+    size === 'md' ? 'gap-2.5 px-4 py-2.5 text-row' : 'gap-2 self-center px-[13px] py-[7px] text-nav',
+    href && 'hover:border-accent',
+    className,
+  ]}
+>
+  <Dot accent={accent} />
+  <slot />
+</Tag>

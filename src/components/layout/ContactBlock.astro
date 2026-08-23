@@ -1,0 +1,40 @@
+---
+import type { Lang } from '../../i18n/ui'
+import { site, siteContent, url } from '../../config/site'
+import { defaultLang, useTranslations } from '../../i18n/ui'
+import DotItem from '../ui/DotItem.astro'
+import TechIcon from '../ui/TechIcon.astro'
+import MetaList from '../ui/MetaList.astro'
+import MetaRow from '../ui/MetaRow.astro'
+
+interface Props {
+  lang?: Lang
+}
+
+const { lang = defaultLang } = Astro.props
+
+const t = useTranslations(lang)
+---
+
+<MetaList>
+  <MetaRow label={t('meta.find')}>
+    <div class="flex flex-wrap gap-x-4 gap-y-2">
+      {
+        siteContent[lang].socials.map((social) => (
+          <DotItem href={url(social.href)} accent={social.accent} tech={social.icon}>
+            {social.label}
+          </DotItem>
+        ))
+      }
+    </div>
+  </MetaRow>
+  <MetaRow label={t('meta.email')}>
+    <a
+      href={`mailto:${site.email}`}
+      class="group/tech inline-flex items-center gap-2 font-mono text-caption text-fg-strong"
+    >
+      <TechIcon name="email" />
+      {site.email}
+    </a>
+  </MetaRow>
+</MetaList>

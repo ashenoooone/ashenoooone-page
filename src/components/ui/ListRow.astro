@@ -1,0 +1,68 @@
+---
+import type { Accent } from '../../lib/accents'
+import { accentHoverBorder } from '../../lib/accents'
+import Text from './Text.astro'
+
+interface Props {
+  title: string
+  description?: string
+  /** Правая колонка: год, «поддерживаю», «авг 26». */
+  aside?: string
+  href?: string
+  /** Цвет, который линия строки берёт при наведении. */
+  accent?: Accent
+  /** Три ступени вертикали строки — под списки заметок, работы и проектов. */
+  density?: 'compact' | 'default' | 'roomy'
+  class?: string
+}
+
+const { title, description, aside, href, accent = 'gold', density = 'default', class: className } = Astro.props
+
+const Tag = href ? 'a' : 'div'
+const isExternal = href ? /^https?:\/\//.test(href) : false
+
+const DENSITY = {
+  compact: 'py-row-compact',
+  default: 'py-row-default',
+  roomy: 'py-row-roomy',
+} as const
+
+const hasMeta = Astro.slots.has('meta')
+---
+
+<Tag
+  href={href}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  target={isExternal ? '_blank' : undefined}
+  class:list={[
+    'grid grid-cols-[1fr_auto] items-baseline gap-x-3.5 gap-y-5 border-t border-line transition-colors last:border-b sm:gap-x-5',
+    DENSITY[density],
+    href && accentHoverBorder[accent],
+    className,
+  ]}
+>
+  <div class:list={['flex flex-col', description ? 'gap-1' : 'gap-0.5']}>
+    <Text variant="bodyStrong" as="span">{title}</Text>
+    {
+      description && (
+        <Text variant="row" as="span">
+          {description}
+        </Text>
+      )
+    }
+    {
+      hasMeta && (
+        <div class="pt-1.5">
+          <slot name="meta" />
+        </div>
+      )
+    }
+  </div>
+  {
+    aside && (
+      <Text variant="meta" as="span" class="flex-none">
+        {aside}
+      </Text>
+    )
+  }
+</Tag>

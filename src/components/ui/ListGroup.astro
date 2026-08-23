@@ -1,0 +1,37 @@
+---
+import Text from './Text.astro'
+
+interface Props {
+  /** Моношрифтовый заголовок над списком, например «работа», «2026». */
+  label?: string
+  id?: string
+  space?: 'none' | 'sm' | 'md' | 'lg'
+  class?: string
+}
+
+const { label, id, space = 'lg', class: className } = Astro.props
+
+/** Значения живут в rhythm.css и сжимаются на телефоне сами. */
+const SPACE = {
+  none: '',
+  sm: 'pt-block-sm',
+  md: 'pt-block-md',
+  lg: 'pt-block-lg',
+} as const
+---
+
+<!--
+  Линии-волоски рисуют сами строки: каждая ведёт верхнюю границу, последняя —
+  ещё и нижнюю. Строки добавляются и убираются, а список остаётся замкнутым
+  без единого класса-модификатора.
+-->
+<section id={id} class:list={['flex flex-col gap-stack', SPACE[space], className]}>
+  {
+    label && (
+      <Text variant="label" class="pb-2">
+        {label}
+      </Text>
+    )
+  }
+  <slot />
+</section>

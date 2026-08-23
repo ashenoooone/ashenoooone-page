@@ -1,0 +1,15 @@
+---
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+---
+
+<!--
+  Зазор 1px плюс рамка 1px поверх фона цвета `line` и рисуют крест-волосок
+  между ячейками — границы на каждой ячейке не нужны.
+-->
+<div class:list={['my-band grid gap-px border border-line bg-line sm:grid-cols-3', className]}>
+  <slot />
+</div>

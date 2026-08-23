@@ -1,0 +1,38 @@
+---
+interface Props {
+  /** Пусто — рендерится заштрихованный плейсхолдер из макетов. */
+  src?: string
+  alt?: string
+  caption?: string
+  ratio?: '16/9' | '3/4' | '4/3' | '1/1'
+  class?: string
+}
+
+const { src, alt = '', caption, ratio = '16/9', class: className } = Astro.props
+
+const RATIO = {
+  '16/9': 'aspect-video',
+  '3/4': 'aspect-[3/4]',
+  '4/3': 'aspect-[4/3]',
+  '1/1': 'aspect-square',
+} as const
+---
+
+<figure class:list={['m-0', className]}>
+  <div
+    class:list={[
+      'flex items-center justify-center overflow-hidden border border-line text-center',
+      RATIO[ratio],
+      !src && 'bg-hatch p-3',
+    ]}
+  >
+    {
+      src ? (
+        <img src={src} alt={alt} loading="lazy" decoding="async" class="size-full object-cover" />
+      ) : (
+        <span class="font-mono text-meta tracking-[0.04em] text-fg-faint">{caption}</span>
+      )
+    }
+  </div>
+  {src && caption && <figcaption class="pt-2 font-mono text-meta text-fg-faint">{caption}</figcaption>}
+</figure>

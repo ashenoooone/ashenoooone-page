@@ -1,0 +1,35 @@
+---
+import type { Accent } from '../../lib/accents'
+import Dot from './Dot.astro'
+import TechIcon from './TechIcon.astro'
+import { techIcon } from '../../lib/tech-icons'
+
+interface Props {
+  accent?: Accent
+  href?: string
+  size?: 'sm' | 'md'
+  /** Название технологии: вместо точки встаёт её логотип, если он у нас есть. */
+  tech?: string
+  class?: string
+}
+
+const { accent = 'gold', href, size = 'md', tech, class: className } = Astro.props
+const hasIcon = Boolean(tech && techIcon(tech))
+const Tag = href ? 'a' : 'span'
+const isExternal = href ? /^https?:\/\//.test(href) : false
+---
+
+<Tag
+  href={href}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  target={isExternal ? '_blank' : undefined}
+  class:list={[
+    'group/tech inline-flex max-w-full items-center gap-2',
+    href && 'border-b border-underline pb-px transition-colors hover:border-underline-hover',
+    hasIcon && 'cursor-pointer transition-colors duration-200 hover:text-fg-display',
+    className,
+  ]}
+>
+  {hasIcon ? <TechIcon name={tech!} /> : <Dot accent={accent} size={size} />}
+  <slot />
+</Tag>

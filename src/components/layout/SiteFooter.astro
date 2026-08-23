@@ -1,0 +1,64 @@
+---
+import type { Lang } from '../../i18n/ui'
+import { localeUrl, site, siteContent, url } from '../../config/site'
+import { defaultLang, swapLang, useTranslations } from '../../i18n/ui'
+import Link from '../ui/Link.astro'
+import Text from '../ui/Text.astro'
+import Wordmark from '../ui/Wordmark.astro'
+
+interface Props {
+  lang?: Lang
+}
+
+const { lang = defaultLang } = Astro.props
+
+const t = useTranslations(lang)
+const content = siteContent[lang]
+
+const pages = [
+  { href: localeUrl('/', lang), label: t('nav.home') },
+  ...site.nav.map((item) => ({ href: localeUrl(item.href, lang), label: t(item.key) })),
+  { href: url(swapLang('/rss.xml', lang)), label: 'RSS' },
+]
+---
+
+<footer class="mt-[var(--foot-top)] border-t border-line pt-7">
+  <div class="flex flex-wrap justify-between gap-x-10 gap-y-9">
+    <div class="flex flex-col items-start gap-2">
+      <Wordmark />
+      <Text variant="caption" as="span">{content.title}</Text>
+      <a
+        href={`mailto:${site.email}`}
+        class="font-mono text-caption text-fg-muted transition-colors hover:text-fg-strong"
+      >
+        {site.email}
+      </a>
+    </div>
+
+    <div class="flex flex-wrap gap-x-10 gap-y-9">
+      <nav class="flex flex-col items-start gap-0.5 sm:gap-2">
+        <Text variant="label" class="pb-1 sm:pb-0">{t('nav.sections')}</Text>
+        {
+          pages.map((page) => (
+            <Link href={page.href} variant="nav" class="py-1.5 sm:py-0">
+              {page.label}
+            </Link>
+          ))
+        }
+      </nav>
+
+      <nav class="flex flex-col items-start gap-0.5 sm:gap-2">
+        <Text variant="label" class="pb-1 sm:pb-0">{t('meta.find')}</Text>
+        {
+          content.socials.map((social) => (
+            <Link href={url(social.href)} variant="nav" rel="me" class="py-1.5 sm:py-0">
+              {social.label}
+            </Link>
+          ))
+        }
+      </nav>
+    </div>
+  </div>
+
+  <div class="mt-8 font-mono text-nav text-fg-quiet sm:mt-10">{site.year}</div>
+</footer>

@@ -1,0 +1,163 @@
+---
+import Badge from '../components/ui/Badge.astro'
+import Divider from '../components/ui/Divider.astro'
+import DotItem from '../components/ui/DotItem.astro'
+import Figure from '../components/ui/Figure.astro'
+import FigureGrid from '../components/ui/FigureGrid.astro'
+import HireButton from '../components/ui/HireButton.astro'
+import Link from '../components/ui/Link.astro'
+import ListGroup from '../components/ui/ListGroup.astro'
+import ListRow from '../components/ui/ListRow.astro'
+import MetaList from '../components/ui/MetaList.astro'
+import MetaRow from '../components/ui/MetaRow.astro'
+import Prose from '../components/ui/Prose.astro'
+import Section from '../components/ui/Section.astro'
+import Stat from '../components/ui/Stat.astro'
+import StatGrid from '../components/ui/StatGrid.astro'
+import TagList from '../components/ui/TagList.astro'
+import Text from '../components/ui/Text.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { ACCENTS } from '../lib/accents'
+---
+
+<BaseLayout title="Дизайн-система" description="Примитивы интерфейса." translated={false} noindex>
+  <Section space="none" gap="text">
+    <Text variant="display" as="h1">Дизайн-система</Text>
+    <Text variant="lead">
+      Все примитивы на одной странице. Если что-то на сайте выглядит иначе, чем здесь — это баг, а не вариант.
+    </Text>
+  </Section>
+
+  <Section label="типографика" space="lg" gap="text">
+    <Text variant="display">display · 40 · Instrument Serif</Text>
+    <Text variant="stat">stat · 32</Text>
+    <Text variant="logo">logo · 21</Text>
+    <Text variant="lead">lead · 19 — вводная строка страницы</Text>
+    <Text variant="body">
+      body · 16 — основной абзац. Внутри встречается
+      <Link href="#">строчная ссылка</Link>, <strong>усиление</strong> и
+      <Text variant="quote" as="span">Designing Data-Intensive Applications</Text>.
+    </Text>
+    <Text variant="rowTitle">rowTitle · 15</Text>
+    <Text variant="row">row · 15 — описание под заголовком строки</Text>
+    <Text variant="caption">caption · 14</Text>
+    <Text variant="nav">nav · 13</Text>
+    <Text variant="label">label · 12 mono</Text>
+    <Text variant="mono">mono · 14 — ashen.one.dev@yandex.com</Text>
+  </Section>
+
+  <Section label="акценты" space="md">
+    <TagList>
+      {ACCENTS.map((accent) => <DotItem accent={accent}>{accent}</DotItem>)}
+    </TagList>
+    <TagList size="sm" class="pt-2">
+      {
+        ACCENTS.map((accent) => (
+          <DotItem accent={accent} size="sm">
+            {accent}
+          </DotItem>
+        ))
+      }
+    </TagList>
+  </Section>
+
+  <Section label="кнопки и ссылки" space="md">
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-4">
+      <Badge href="#">Свободен для проекта</Badge>
+      <Badge href="#" size="sm">Свободен для проекта</Badge>
+      <Badge accent="gold">без ссылки</Badge>
+    </div>
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-4 pt-4">
+      <HireButton href="#" label="Написать мне" />
+    </div>
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 pt-4">
+      <Link href="#">строчная</Link>
+      <Link href="#" variant="nav">навигация</Link>
+      <Link href="#" variant="nav" current>активная</Link>
+      <Link href="#" variant="quiet">← все проекты</Link>
+    </div>
+  </Section>
+
+  <Section label="мета-строки" space="md">
+    <MetaList>
+      <MetaRow label="работаю">
+        <TagList>
+          <DotItem accent="red" class="text-fg-strong">ПиццаСофт</DotItem>
+          <DotItem accent="blue" class="text-fg-strong">senior frontend</DotItem>
+        </TagList>
+      </MetaRow>
+      <MetaRow label="пишу на">
+        <TagList class="text-fg-dim">
+          <DotItem accent="indigo" size="sm" tech="TypeScript">TypeScript</DotItem>
+          <DotItem accent="teal" size="sm" tech="React 19">React 19</DotItem>
+          <DotItem accent="gray" size="sm" tech="Next.js 15">Next.js 15</DotItem>
+        </TagList>
+      </MetaRow>
+      <MetaRow label="сроки">2024 — сейчас</MetaRow>
+    </MetaList>
+  </Section>
+
+  <ListGroup label="списки" space="md">
+    <ListRow
+      href="#"
+      title="Веб-платформа доставки еды"
+      description="Next.js 15, ISR с общим кэшем, realtime-трекинг курьера."
+      aside="2024 →"
+      density="roomy"
+    >
+      <TagList slot="meta" size="sm">
+        <DotItem accent="rust" size="sm">−45% TTFB</DotItem>
+        <DotItem accent="blue" size="sm">3 WebView-платформы</DotItem>
+      </TagList>
+    </ListRow>
+    <ListRow
+      href="#"
+      title="Бэкофис сети пиццерий"
+      description="Промокупоны, конструктор кампаний, декларативный RBAC."
+      aside="2024 →"
+    />
+    <ListRow
+      href="#"
+      title="800 килобайт, которых не должно было быть"
+      aside="авг 26"
+      density="compact"
+      accent="rust"
+    />
+  </ListGroup>
+
+  <Section label="метрики" space="md" gap="tight">
+    <StatGrid class="mt-2 mb-0">
+      <Stat value="−45%" label="TTFB каталога" />
+      <Stat value="−20…50%" label="бандл ключевых страниц" />
+      <Stat value="3" label="WebView-платформы" />
+    </StatGrid>
+  </Section>
+
+  <Section label="изображения" space="md">
+    <Figure caption="скриншот: каталог ресторанов" class="mt-2" />
+    <FigureGrid>
+      <Figure ratio="3/4" caption="скриншот: трекинг курьера" />
+      <Figure ratio="3/4" caption="скриншот: корзина и оплата" />
+    </FigureGrid>
+  </Section>
+
+  <Section label="текст из markdown" space="md">
+    <Prose class="pt-2">
+      <p>
+        Абзац из <code>.md</code>-файла. Ссылки, <strong>усиление</strong> и
+        <em>Designing Data-Intensive Applications</em> оформляются здесь.
+      </p>
+      <h2>Подзаголовок</h2>
+      <ul>
+        <li>Пункт списка</li>
+        <li>Ещё пункт</li>
+      </ul>
+      <blockquote>Цитата — то, что стоит вынести отдельно.</blockquote>
+      <pre><code>pnpm astro build</code></pre>
+    </Prose>
+  </Section>
+
+  <Divider />
+
+  <Text variant="body"> Разделитель выше — 52 пикселя. Дальше идёт контактный блок и подвал. </Text>
+</BaseLayout>

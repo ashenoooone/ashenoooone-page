@@ -1,0 +1,30 @@
+---
+interface Props {
+  href: string
+  label: string
+  class?: string
+}
+
+const { href, label, class: className } = Astro.props
+---
+
+<a
+  href={href}
+  aria-label={label}
+  class:list={[
+    'group inline-flex flex-none items-center py-2.5 font-mono text-row whitespace-nowrap text-fg-strong sm:py-1.5',
+    className,
+  ]}
+>
+  <span
+    aria-hidden="true"
+    class="inline-block text-fg-muted transition-[transform,color] duration-200 group-hover:-translate-x-1 group-hover:text-accent"
+    >[</span
+  >
+  <span class="px-2">hire me</span>
+  <span
+    aria-hidden="true"
+    class="inline-block text-fg-muted transition-[transform,color] duration-200 group-hover:translate-x-1 group-hover:text-accent"
+    >]</span
+  >
+</a>

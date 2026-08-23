@@ -1,0 +1,90 @@
+---
+interface Props {
+  label: string
+}
+
+const { label } = Astro.props
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  aria-label={label}
+  title={label}
+  class="-m-2 flex cursor-pointer items-center border-0 bg-transparent p-2 text-fg-muted transition-colors hover:text-fg-strong"
+>
+  <svg
+    data-theme-icon="sun"
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    class="size-4 flex-none"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"
+    ></path>
+  </svg>
+  <svg
+    data-theme-icon="moon"
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="size-4 flex-none"
+  >
+    <path d="M20.5 13.4A8.5 8.5 0 1 1 10.6 3.5a6.6 6.6 0 0 0 9.9 9.9z"></path>
+  </svg>
+</button>
+
+<!--
+  Иконка показывает тему, в которую уводит клик: в тёмной — солнце, в светлой — луна.
+  Считается на CSS, а не в JS, чтобы кнопка не моргала чужой иконкой до гидрации.
+  Стили глобальные: селекторы завязаны на `data-theme` у `:root`, который Astro не скоупит.
+-->
+<style is:global>
+  [data-theme-icon='moon'] {
+    display: none;
+  }
+
+  :root[data-theme='light'] [data-theme-icon='sun'] {
+    display: none;
+  }
+
+  :root[data-theme='light'] [data-theme-icon='moon'] {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme='dark']) [data-theme-icon='sun'] {
+      display: none;
+    }
+
+    :root:not([data-theme='dark']) [data-theme-icon='moon'] {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'theme'
+
+  function current(): 'light' | 'dark' {
+    const explicit = document.documentElement.dataset.theme
+    if (explicit === 'light' || explicit === 'dark') {
+      return explicit
+    }
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+  }
+
+  document.querySelector<HTMLButtonElement>('[data-theme-toggle]')?.addEventListener('click', () => {
+    const next = current() === 'dark' ? 'light' : 'dark'
+    document.documentElement.dataset.theme = next
+    localStorage.setItem(STORAGE_KEY, next)
+  })
+</script>

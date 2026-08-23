@@ -1,0 +1,138 @@
+/* ============================================================
+   Токены дизайна — сырые значения.
+   Только семантические имена. Голый hex вне этого файла не использовать.
+   ============================================================ */
+
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* поверхности */
+  --bg: #101112;
+  --bg-raised: #131415;
+  --hatch-a: #141516;
+  --hatch-b: #17191a;
+
+  /* линии */
+  --line: #1e2123; /* волоски между строками списков, рамки */
+  --line-strong: #2f3335; /* кнопка с обводкой */
+  --line-rule: #232628; /* короткая линия секции */
+  --line-underline: #6a6e70; /* подчёркивание ссылки в тексте */
+  --line-underline-hover: #ffffff;
+
+  /* текст */
+  --fg: #dcdedf; /* по умолчанию на странице */
+  --fg-display: #f5f6f7; /* serif-заголовки, числа метрик */
+  --fg-lead: #f2f4f5; /* вводная строка 19px */
+  --fg-strong: #eff1f2; /* ссылки, заголовки строк */
+  --fg-soft: #a9aeb0; /* абзацы текста */
+  --fg-dim: #8a8f91; /* описания строк */
+  --fg-muted: #75797b; /* навигация */
+  --fg-faint: #6d7173; /* моношрифтовая мета */
+  --fg-quiet: #5f6365; /* подвал */
+  --fg-invert: #101112;
+
+  /* акценты — точки-маркеры, рамки при наведении */
+  --accent: #d3a44f;
+  --dot-gold: #d3a44f;
+  --dot-green: #62a884;
+  --dot-moss: #5f9d6b;
+  --dot-red: #e0533f;
+  --dot-rust: #c25f52;
+  --dot-orange: #c07f4a;
+  --dot-blue: #6f8fd6;
+  --dot-indigo: #4f7fb8;
+  --dot-teal: #5aa0a8;
+  --dot-gray: #8d9295;
+  --dot-silver: #b6babc;
+
+  --selection-bg: #d3a44f;
+  --selection-fg: #101112;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #f7f5f1;
+  --bg-raised: #f1eee8;
+  --hatch-a: #f0ede7;
+  --hatch-b: #eae6de;
+
+  --line: #e3dfd7;
+  --line-strong: #d9d4cb;
+  --line-rule: #dcd8d0;
+  --line-underline: #d3cfc6;
+  --line-underline-hover: #111213;
+
+  --fg: #26282a;
+  --fg-display: #0b0c0d;
+  --fg-lead: #0b0c0d;
+  --fg-strong: #111213;
+  --fg-soft: #4b4e50;
+  --fg-dim: #55585a;
+  --fg-muted: #7c7a74;
+  --fg-faint: #8b8880;
+  --fg-quiet: #948f87;
+  --fg-invert: #f7f5f1;
+
+  --accent: #a8791b;
+  --dot-gold: #a8791b;
+  --dot-green: #3b8a63;
+  --dot-moss: #43764f;
+  --dot-red: #cf4127;
+  --dot-rust: #b04432;
+  --dot-orange: #9a6127;
+  --dot-blue: #4a68b4;
+  --dot-indigo: #38598f;
+  --dot-teal: #3d7c84;
+  --dot-gray: #6b7073;
+  --dot-silver: #55585a;
+
+  --selection-bg: #ecd9ac;
+  --selection-fg: #111213;
+}
+
+/* Следуем за ОС, пока посетитель не выбрал явно. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    color-scheme: light;
+
+    --bg: #f7f5f1;
+    --bg-raised: #f1eee8;
+    --hatch-a: #f0ede7;
+    --hatch-b: #eae6de;
+
+    --line: #e3dfd7;
+    --line-strong: #d9d4cb;
+    --line-rule: #dcd8d0;
+    --line-underline: #d3cfc6;
+    --line-underline-hover: #111213;
+
+    --fg: #26282a;
+    --fg-display: #0b0c0d;
+    --fg-lead: #0b0c0d;
+    --fg-strong: #111213;
+    --fg-soft: #4b4e50;
+    --fg-dim: #55585a;
+    --fg-muted: #7c7a74;
+    --fg-faint: #8b8880;
+    --fg-quiet: #948f87;
+    --fg-invert: #f7f5f1;
+
+    --accent: #a8791b;
+    --dot-gold: #a8791b;
+    --dot-green: #3b8a63;
+    --dot-moss: #43764f;
+    --dot-red: #cf4127;
+    --dot-rust: #b04432;
+    --dot-orange: #9a6127;
+    --dot-blue: #4a68b4;
+    --dot-indigo: #38598f;
+    --dot-teal: #3d7c84;
+    --dot-gray: #6b7073;
+    --dot-silver: #55585a;
+
+    --selection-bg: #ecd9ac;
+    --selection-fg: #111213;
+  }
+}

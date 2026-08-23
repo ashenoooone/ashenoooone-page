@@ -1,0 +1,58 @@
+---
+import type { Lang } from '../../i18n/ui'
+import ContactBlock from '../../components/layout/ContactBlock.astro'
+import Divider from '../../components/ui/Divider.astro'
+import ListGroup from '../../components/ui/ListGroup.astro'
+import Text from '../../components/ui/Text.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { useTranslations } from '../../i18n/ui'
+import { byYear, getNotes, getPage } from '../../lib/content'
+import NoteRow from '../notes/NoteRow.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+
+const t = useTranslations(lang)
+
+const page = await getPage('blog', lang)
+if (!page) {
+  throw new Error(`Missing blog page content for "${lang}"`)
+}
+
+const notes = await getNotes(lang)
+const years = byYear(notes)
+---
+
+<BaseLayout lang={lang} title={page.data.title} description={page.data.description}>
+  <!-- Страница открывается сразу списком, поэтому единственный h1 — служебный. -->
+  <h1 class="sr-only">{page.data.title}</h1>
+
+  {
+    notes.length === 0 && <Text variant="body">{t('blog.emptyAll')}</Text>
+  }
+
+  {
+    years.map((group, index) => (
+      <ListGroup label={String(group.year)} space={index === 0 ? 'none' : 'md'}>
+        {group.notes.map((note) => (
+          <NoteRow note={note} lang={lang} />
+        ))}
+      </ListGroup>
+    ))
+  }
+
+  <Divider />
+
+  <ContactBlock lang={lang} />
+
+  {
+    page.data.outro && (
+      <Text variant="body" class="pt-[var(--outro-top)]">
+        {page.data.outro}
+      </Text>
+    )
+  }
+</BaseLayout>

@@ -1,0 +1,73 @@
+---
+import DotItem from '../components/ui/DotItem.astro'
+import Section from '../components/ui/Section.astro'
+import Text from '../components/ui/Text.astro'
+import { localeUrl } from '../config/site'
+import { LANGS, useTranslations } from '../i18n/ui'
+import BaseLayout from '../layouts/BaseLayout.astro'
+
+/**
+ * Хостинг статический: один `404.html` отдаётся на любой битый путь, и язык
+ * на сервере не известен. Поэтому в разметку попадают оба блока, а лишний
+ * прячет скрипт ниже. Без JS остаются оба — читаемо, просто длиннее.
+ */
+const blocks = LANGS.map((lang) => {
+  const t = useTranslations(lang)
+
+  return {
+    lang,
+    lead: t('notFound.lead'),
+    body: t('notFound.body'),
+    links: [
+      { text: t('nav.home'), href: localeUrl('/', lang), accent: 'gold' as const },
+      { text: t('nav.blog'), href: localeUrl('/blog', lang), accent: 'rust' as const },
+      { text: t('nav.projects'), href: localeUrl('/projects', lang), accent: 'blue' as const },
+    ],
+  }
+})
+
+const t = useTranslations('ru')
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+---
+
+<BaseLayout title={t('notFound.title')} description={t('notFound.lead')} translated={false} noindex>
+  <Section space="none" gap="text">
+    <Text variant="display" as="h1">404</Text>
+  </Section>
+
+  {
+    blocks.map((block) => (
+      <div lang={block.lang} data-lang-block={block.lang}>
+        <Section space="md" gap="text">
+          <Text variant="lead">{block.lead}</Text>
+          <Text variant="label">{block.body}</Text>
+          <div class="flex flex-wrap gap-x-4 gap-y-2">
+            {block.links.map((link) => (
+              <DotItem href={link.href} accent={link.accent} class="text-fg-strong">
+                {link.text}
+              </DotItem>
+            ))}
+          </div>
+        </Section>
+      </div>
+    ))
+  }
+
+  <!-- Синхронный: отрабатывает до отрисовки, поэтому лишний блок не мигает. -->
+  <script is:inline define:vars={{ base }}>
+    const path = location.pathname.slice(base.length)
+    const stored = localStorage.getItem('lang')
+    const tags = navigator.languages?.length ? navigator.languages : [navigator.language]
+
+    // Битая ссылка под /en/ — самый надёжный сигнал; дальше выбор посетителя и браузер.
+    const lang = /^\/en(?:\/|$)/.test(path)
+      ? 'en'
+      : (stored ?? (tags.some((tag) => /^ru\b/i.test(tag ?? '')) ? 'ru' : 'en'))
+
+    document.documentElement.lang = lang
+    for (const block of document.querySelectorAll('[data-lang-block]')) {
+      block.hidden = block.dataset.langBlock !== lang
+    }
+  </script>
+</BaseLayout>

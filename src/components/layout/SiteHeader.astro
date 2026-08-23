@@ -1,0 +1,62 @@
+---
+import type { Lang } from '../../i18n/ui'
+import { localeUrl, site, siteContent } from '../../config/site'
+import { defaultLang, langLabel, otherLang, useTranslations } from '../../i18n/ui'
+import Link from '../ui/Link.astro'
+import Wordmark from '../ui/Wordmark.astro'
+import ThemeToggle from './ThemeToggle.astro'
+
+interface Props {
+  lang?: Lang
+  /** Путь текущей страницы без локали — по нему подсвечивается активный пункт меню. */
+  path?: string
+  /** Та же страница на другом языке; отсутствует, когда перевода нет. */
+  switchHref?: string
+}
+
+const { lang = defaultLang, path = '/', switchHref } = Astro.props
+
+const t = useTranslations(lang)
+const content = siteContent[lang]
+const other = otherLang(lang)
+
+const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
+---
+
+<header
+  class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-3 pt-6 pb-[var(--head-bottom)] text-caption text-fg-muted sm:pt-7"
+>
+  <Link href={localeUrl('/', lang)} variant="bare" aria-label={content.title}>
+    <Wordmark />
+  </Link>
+
+  <nav class="-my-1.5 flex flex-wrap items-center justify-end gap-x-4 gap-y-1 sm:gap-x-5">
+    {
+      site.nav.map((item) => (
+        <Link
+          href={localeUrl(item.href, lang)}
+          variant="nav"
+          current={isCurrent(item.href)}
+          class="py-1.5 font-semibold"
+        >
+          {t(item.key)}
+        </Link>
+      ))
+    }
+    {
+      switchHref && (
+        <Link
+          href={switchHref}
+          variant="quiet"
+          class="py-1.5 text-nav font-semibold"
+          hreflang={other}
+          aria-label={t('lang.switch')}
+          data-lang-switch={other}
+        >
+          {langLabel[other]}
+        </Link>
+      )
+    }
+    <ThemeToggle label={t('theme.toggle')} />
+  </nav>
+</header>
