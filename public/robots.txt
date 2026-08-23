@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://ashenoooone.github.io/ashenoooone-page/sitemap.xml

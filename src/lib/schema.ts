@@ -1,5 +1,6 @@
 import type { Lang } from '../i18n/ui'
 import { localeUrl, site, siteContent } from '../config/site'
+import { LANGS } from '../i18n/ui'
 
 /** Данные заметки, которых нет у обычной страницы. */
 export interface ArticleMeta {
@@ -31,6 +32,18 @@ const abs = (path: string, lang: Lang, origin: URL) => new URL(localeUrl(path, l
  */
 export const personId = (lang: Lang, origin: URL) => `${abs('/', lang, origin)}#person`
 
+/**
+ * Имя пишется по-разному в каждой локали, а в сети человек ещё и под ником.
+ * Все написания перечисляются на любой странице, иначе поисковик считает
+ * «Романа Гонтаря», «Roman Gontar» и `ashenoooone` тремя разными людьми.
+ */
+function aliases(lang: Lang) {
+  return [
+    ...LANGS.filter(code => code !== lang).map(code => siteContent[code].title),
+    site.nickname,
+  ]
+}
+
 export function personSchema({ lang, origin, image }: Omit<Context, 'canonical'>, description: string) {
   const content = siteContent[lang]
 
@@ -39,6 +52,7 @@ export function personSchema({ lang, origin, image }: Omit<Context, 'canonical'>
     '@type': 'Person',
     '@id': personId(lang, origin),
     'name': content.title,
+    'alternateName': aliases(lang),
     'jobTitle': content.jobTitle,
     'description': description,
     'url': abs('/', lang, origin),
@@ -46,6 +60,28 @@ export function personSchema({ lang, origin, image }: Omit<Context, 'canonical'>
     'email': `mailto:${site.email}`,
     'knowsLanguage': ['ru', 'en'],
     'sameAs': content.socials.map(social => social.href),
+  }
+}
+
+/**
+ * Сайт как отдельная сущность: связывает домен с автором, чтобы бренд-запрос
+ * по имени вёл на главную, а не на случайную заметку.
+ */
+export function websiteSchema({ lang, origin }: Pick<Context, 'lang' | 'origin'>, description: string) {
+  const content = siteContent[lang]
+  const home = abs('/', lang, origin)
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${home}#website`,
+    'name': content.title,
+    'alternateName': aliases(lang),
+    'description': description,
+    'url': home,
+    'inLanguage': lang,
+    'author': { '@id': personId(lang, origin) },
+    'publisher': { '@id': personId(lang, origin) },
   }
 }
 

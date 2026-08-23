@@ -29,6 +29,8 @@ export interface LocaleContent {
 /** Значения, которые читаются одинаково на любом языке. */
 export const site = {
   wordmark: 'rg',
+  /** Сетевой ник: уходит в `alternateName`, чтобы он склеился с именем. */
+  nickname: 'ashenoooone',
   email: 'ashen.one.dev@yandex.com',
   year: 2026,
 

@@ -10,7 +10,7 @@ import Container from '../components/ui/Container.astro'
 import { site, siteContent, url } from '../config/site'
 import { defaultLang, LANGS, otherLang, stripLang, swapLang, useTranslations } from '../i18n/ui'
 import { withExperience } from '../lib/experience'
-import { articleSchema, breadcrumbSchema, personSchema } from '../lib/schema'
+import { articleSchema, breadcrumbSchema, personSchema, websiteSchema } from '../lib/schema'
 import '../styles/global.css'
 
 interface Props {
@@ -30,7 +30,11 @@ const { lang = defaultLang, title, description, translated = true, article, noin
 const t = useTranslations(lang)
 const content = siteContent[lang]
 
-const pageTitle = title ? `${title} · ${content.title}` : content.title
+/**
+ * У главной в заголовке нечего уточнять, поэтому там стоит должность: запрос
+ * идёт и по имени, и по «фронтендер», а сниппет перестаёт быть голым именем.
+ */
+const pageTitle = title ? `${title} · ${content.title}` : `${content.title} — ${content.jobTitle}`
 const pageDescription = withExperience(description ?? content.description, lang)
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '')
@@ -65,6 +69,7 @@ const schemas = noindex
   ? []
   : [
       bare === '/' && personSchema(context, pageDescription),
+      bare === '/' && websiteSchema(context, pageDescription),
       article && articleSchema(context, { title: title ?? content.title, description: pageDescription, article }),
       crumbs.length > 1 && breadcrumbSchema(crumbs),
     ].filter(Boolean)
