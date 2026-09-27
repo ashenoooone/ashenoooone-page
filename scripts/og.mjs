@@ -43,13 +43,13 @@ const CARDS = [
     file: 'og.png',
     name: 'Роман Гонтарь',
     role: 'frontend-разработчик',
-    lines: ['Интерфейсы, которым нельзя тормозить.', 'Заметки о производительности и архитектуре.'],
+    lines: ['Строю фронтенд-системы.', 'Заметки о производительности и архитектуре.'],
   },
   {
     file: 'og-en.png',
     name: 'Roman Gontar',
     role: 'frontend developer',
-    lines: ['Interfaces that are not allowed to be slow.', 'Notes on performance and architecture.'],
+    lines: ['Building frontend systems.', 'Notes on performance and architecture.'],
   },
 ]
 

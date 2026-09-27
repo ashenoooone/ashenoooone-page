@@ -1,4 +1,5 @@
 ---
 title: Projects
-description: "{{experience}} of product frontend: food delivery, a pizzeria chain back office, B2B analytics and the internal libraries underneath."
+description: "Roman Gontar's open projects: side projects and open source contributions."
+lead: "What I work on in the open: my own side projects and the ones I contribute to."
 ---

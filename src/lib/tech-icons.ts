@@ -254,6 +254,7 @@ export const techIcons: Record<string, TechIcon> = {
   'husky': {
     emoji: '🐶',
   },
+  'reactuse': pkg,
   'embla carousel': pkg,
   'nanoid': pkg,
   'js-cookie': pkg,

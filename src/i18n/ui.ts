@@ -29,16 +29,9 @@ export const ui = {
     'lang.hintOpen': 'Открыть',
     'lang.hintDismiss': 'Скрыть',
 
-    'home.work': 'работа',
     'home.blog': 'блог',
 
-    'projects.back': '← все проекты',
-    'projects.next': 'дальше',
-    'projects.role': 'роль',
-    'projects.team': 'команда',
-    'projects.stack': 'стек',
-    'projects.period': 'сроки',
-    'projects.gallery': 'как это выглядит',
+    'projects.empty': 'Пока пусто. Скоро здесь появятся проекты.',
 
     'blog.back': '← в блог',
     'blog.related': 'ещё по теме',
@@ -75,16 +68,9 @@ export const ui = {
     'lang.hintOpen': 'Read it',
     'lang.hintDismiss': 'Dismiss',
 
-    'home.work': 'work',
     'home.blog': 'blog',
 
-    'projects.back': '← all projects',
-    'projects.next': 'next',
-    'projects.role': 'role',
-    'projects.team': 'team',
-    'projects.stack': 'stack',
-    'projects.period': 'period',
-    'projects.gallery': 'what it looks like',
+    'projects.empty': 'Empty for now. Projects are coming soon.',
 
     'blog.back': '← back to blog',
     'blog.related': 'more on this topic',

@@ -23,49 +23,12 @@ const notes = defineCollection({
   }),
 })
 
-const projects = defineCollection({
-  loader: files('./src/content/projects'),
-  schema: z.object({
-    title: z.string(),
-    /** Описание строки на странице проектов и meta-description самой страницы. */
-    summary: z.string(),
-    /** Короткое описание строки для главной; если нет — берётся `summary`. */
-    teaser: z.string().optional(),
-    /** Вводная строка 19px на странице проекта. */
-    lead: z.string().optional(),
-    kind: z.literal('product'),
-    /** Правая колонка строки: годы, «поддерживаю», «GitHub →». */
-    aside: z.string(),
-    period: z.string().optional(),
-    role: z.array(z.object({ text: z.string(), accent: accent.default('blue') })).default([]),
-    team: z.array(z.string()).default([]),
-    stack: z.array(z.string()).default([]),
-    /** Моношрифтовые чипы под заголовком строки на странице проектов. */
-    highlights: z.array(z.object({ label: z.string(), accent: accent.default('gray') })).default([]),
-    stats: z.array(z.object({ value: z.string(), label: z.string() })).default([]),
-    gallery: z
-      .array(
-        z.object({
-          caption: z.string(),
-          src: z.string().optional(),
-          alt: z.string().optional(),
-          ratio: z.enum(['16/9', '3/4', '4/3', '1/1']).default('16/9'),
-        }),
-      )
-      .default([]),
-    order: z.number().default(99),
-    /** Строки, ведущие полностью наружу, — своей страницы у них нет. */
-    externalUrl: z.string().optional(),
-    draft: z.boolean().default(false),
-  }),
-})
-
 const pages = defineCollection({
   loader: files('./src/content/pages'),
   schema: z.object({
     title: z.string().optional(),
     description: z.string().optional(),
-    /** Вводная строка 19px. Нет у страницы проектов — она открывается сразу списком. */
+    /** Вводная строка 19px. */
     lead: z.string().optional(),
     /** Строки «подпись/значение» под вводной. */
     meta: z
@@ -89,4 +52,4 @@ const pages = defineCollection({
   }),
 })
 
-export const collections = { notes, projects, pages }
+export const collections = { notes, pages }

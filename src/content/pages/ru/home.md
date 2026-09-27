@@ -1,19 +1,14 @@
 ---
-lead: "Привет. Я Роман Гонтарь, frontend-разработчик. {{experience}} собираю интерфейсы, которым нельзя тормозить."
+lead: "Привет. Я Роман Гонтарь, frontend-разработчик. {{experience}} строю фронтенд-системы."
 meta:
-  - label: работаю
-    items:
-      - { text: ПиццаСофт, accent: red }
-      - { text: senior frontend, accent: blue }
   - label: живу
     items:
       - { text: Москва, accent: gray }
       - { text: английский B2, accent: gray }
-#   - label: собрал
-#     items:
-#       - { text: платформу доставки, accent: gold, href: /projects/delivery-platform }
-#       - { text: бэкофис сети, accent: gold, href: /projects/pizzeria-backoffice }
-#       - { text: досье B2B, accent: gold, href: /projects/b2b-dossier }
+  - label: контрибьючу в
+    tech: true
+    items:
+      - { text: reactuse, href: https://github.com/siberiacancode/reactuse }
   - label: пишу на
     tech: true
     items:
@@ -39,7 +34,7 @@ meta:
 
 Frontend-разработчик с опытом высоконагруженных веб-платформ, CRM, CMS и B2B-продуктов. Ускоряю пользовательские сценарии, снижаю нагрузку на backend, улучшаю стабильность релизов: каталоги, оформление заказов, личные кабинеты, промо-механики, админ-панели, realtime-трекинг. Активно использую AI-инструменты и стараюсь приносить измеримый результат.
 
-Работаю над разными проектами: продуктовый фронтенд, внутренние инструменты, библиотеки и общие пакеты. [Полный список проектов здесь](/projects).
+В свободное время пилю пет-проекты и контрибьючу в [reactuse](https://github.com/siberiacancode/reactuse). [Все проекты здесь](/projects).
 
 Менторю новичков и коллег со смежных команд: ввожу в архитектуру проекта и разбираю решения на код-ревью, чтобы человек быстрее выходил на самостоятельные задачи.
 

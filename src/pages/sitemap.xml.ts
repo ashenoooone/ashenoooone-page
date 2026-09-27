@@ -3,7 +3,7 @@ import type { Lang } from '../i18n/ui'
 import { localeUrl } from '../config/site'
 import { TOPIC_KEYS } from '../config/topics'
 import { defaultLang, LANGS } from '../i18n/ui'
-import { getNotes, getProjectPages, slugOf } from '../lib/content'
+import { getNotes, slugOf } from '../lib/content'
 
 interface Entry {
   path: string
@@ -13,7 +13,7 @@ interface Entry {
 
 /** Пути без локали, которые публикует заданный язык. */
 async function pathsOf(lang: Lang): Promise<Entry[]> {
-  const [notes, projects] = await Promise.all([getNotes(lang), getProjectPages(lang)])
+  const notes = await getNotes(lang)
 
   /** Свежесть раздела — дата самой новой заметки в нём. */
   const newest = (list: typeof notes) =>
@@ -28,7 +28,6 @@ async function pathsOf(lang: Lang): Promise<Entry[]> {
       lastmod: newest(notes.filter(note => note.data.topic === topic)),
     })),
     ...notes.map(note => ({ path: `/blog/${slugOf(note)}`, lastmod: note.data.date })),
-    ...projects.map(project => ({ path: `/projects/${slugOf(project)}` })),
   ]
 }
 

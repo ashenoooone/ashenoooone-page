@@ -13,10 +13,9 @@ import Text from '../../components/ui/Text.astro'
 import { site } from '../../config/site'
 import { useTranslations } from '../../i18n/ui'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import { getNotes, getPage, getProjects } from '../../lib/content'
+import { getNotes, getPage } from '../../lib/content'
 import { withExperience } from '../../lib/experience'
 import NoteRow from '../notes/NoteRow.astro'
-import ProjectRow from '../projects/ProjectRow.astro'
 import MetaBlock from './MetaBlock.astro'
 
 interface Props {
@@ -34,7 +33,6 @@ if (!page) {
 
 const { Content } = await render(page)
 
-const projects = (await getProjects(lang)).filter(({ data }) => data.kind === 'product').slice(0, 3)
 const notes = (await getNotes(lang)).slice(0, 3)
 ---
 
@@ -47,13 +45,9 @@ const notes = (await getNotes(lang)).slice(0, 3)
     <Prose><Content /></Prose>
   </Section>
 
-  <ListGroup label={t('home.work')} space="lg">
-    {projects.map((project) => <ProjectRow project={project} lang={lang} short />)}
-  </ListGroup>
-
   {
     notes.length > 0 && (
-      <ListGroup label={t('home.blog')} space="md">
+      <ListGroup label={t('home.blog')} space="lg">
         {notes.map((note) => (
           <NoteRow note={note} lang={lang} compact />
         ))}

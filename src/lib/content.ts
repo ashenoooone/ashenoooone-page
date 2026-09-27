@@ -3,7 +3,6 @@ import type { Lang } from '../i18n/ui'
 import { getCollection, getEntry } from 'astro:content'
 
 export type Note = CollectionEntry<'notes'>
-export type Project = CollectionEntry<'projects'>
 export type Page = CollectionEntry<'pages'>
 
 /** `ru/ssr-we-did-not-deserve` → `ssr-we-did-not-deserve`. */
@@ -23,20 +22,6 @@ export async function getNotes(lang: Lang): Promise<Note[]> {
   )
 
   return notes.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-}
-
-export async function getProjects(lang: Lang): Promise<Project[]> {
-  const projects = await getCollection(
-    'projects',
-    ({ id, data }) => inLang(id, lang) && published(data.draft),
-  )
-
-  return projects.sort((a, b) => a.data.order - b.data.order)
-}
-
-/** Проекты со своей страницей — остальные только ссылаются наружу. */
-export async function getProjectPages(lang: Lang): Promise<Project[]> {
-  return (await getProjects(lang)).filter(project => !project.data.externalUrl)
 }
 
 export function getPage(name: 'home' | 'blog' | 'projects', lang: Lang) {
