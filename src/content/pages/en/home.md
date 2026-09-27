@@ -38,8 +38,6 @@ meta:
 
 Frontend developer with experience in high-load web platforms, CRM, CMS and B2B products. I speed up user journeys, reduce the load on the backend, improve release stability: catalogues, checkout, personal accounts, promo mechanics, admin panels, realtime tracking. I use AI tools actively and try to bring a measurable result.
 
-In my spare time I build side projects and contribute to [reactuse](https://github.com/siberiacancode/reactuse). [All projects are here](/en/projects).
-
 I mentor juniors and colleagues from neighbouring teams: walking them through the architecture and unpacking decisions in code review, so they get to independent work sooner.
 
 I write [notes](/en/blog) about performance, frontend architecture and AI agents in a living codebase.
