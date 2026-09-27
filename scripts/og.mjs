@@ -43,13 +43,13 @@ const CARDS = [
     file: 'og.png',
     name: 'Роман Гонтарь',
     role: 'frontend-разработчик',
-    lines: ['Строю фронтенд-системы.', 'Заметки о производительности и архитектуре.'],
+    lines: ['Строю системы.', 'Заметки о производительности и архитектуре.'],
   },
   {
     file: 'og-en.png',
     name: 'Roman Gontar',
     role: 'frontend developer',
-    lines: ['Building frontend systems.', 'Notes on performance and architecture.'],
+    lines: ['Building systems.', 'Notes on performance and architecture.'],
   },
 ]
 

@@ -46,7 +46,7 @@ export const siteContent: Record<Lang, LocaleContent> = {
     jobTitle: 'Frontend-разработчик',
     ogImage: '/og.png',
     description:
-      'Frontend-разработчик. {{experience}} строю фронтенд-системы.',
+      'Frontend-разработчик. {{experience}} строю системы.',
     socials: [
       { label: 'GitHub', href: 'https://github.com/ashenoooone', accent: 'silver', icon: 'github' },
       { label: 'Telegram', href: 'https://t.me/ashenoooone', accent: 'blue', icon: 'telegram' },
@@ -58,7 +58,7 @@ export const siteContent: Record<Lang, LocaleContent> = {
     jobTitle: 'Frontend developer',
     ogImage: '/og-en.png',
     description:
-      'Frontend developer. {{experience}} of building frontend systems.',
+      'Frontend developer. {{experience}} of building systems.',
     socials: [
       { label: 'GitHub', href: 'https://github.com/ashenoooone', accent: 'silver', icon: 'github' },
       { label: 'Telegram', href: 'https://t.me/ashenoooone', accent: 'blue', icon: 'telegram' },

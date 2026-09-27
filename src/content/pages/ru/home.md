@@ -1,5 +1,5 @@
 ---
-lead: "Привет. Я Роман Гонтарь, frontend-разработчик. {{experience}} строю фронтенд-системы."
+lead: "Привет. Я Роман Гонтарь, frontend-разработчик. {{experience}} строю системы."
 meta:
   - label: живу
     items:
@@ -16,6 +16,10 @@ meta:
       - { text: React 19 }
       - { text: Next.js 15 }
       - { text: Node.js }
+      - { text: Python }
+      - { text: Go }
+      - { text: PostgreSQL }
+      - { text: Redis }
       - { text: Vite }
       - { text: Effector }
       - { text: TanStack Query }
