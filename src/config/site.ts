@@ -43,10 +43,10 @@ export const site = {
 export const siteContent: Record<Lang, LocaleContent> = {
   ru: {
     title: 'Роман Гонтарь',
-    jobTitle: 'Frontend-разработчик',
+    jobTitle: 'Fullstack-разработчик',
     ogImage: '/og.png',
     description:
-      'Frontend-разработчик. {{experience}} строю системы.',
+      'Fullstack-разработчик. {{experience}} строю системы.',
     socials: [
       { label: 'GitHub', href: 'https://github.com/ashenoooone', accent: 'silver', icon: 'github' },
       { label: 'Telegram', href: 'https://t.me/ashenoooone', accent: 'blue', icon: 'telegram' },
@@ -55,10 +55,10 @@ export const siteContent: Record<Lang, LocaleContent> = {
   },
   en: {
     title: 'Roman Gontar',
-    jobTitle: 'Frontend developer',
+    jobTitle: 'Fullstack developer',
     ogImage: '/og-en.png',
     description:
-      'Frontend developer. {{experience}} of building systems.',
+      'Fullstack developer. {{experience}} of building systems.',
     socials: [
       { label: 'GitHub', href: 'https://github.com/ashenoooone', accent: 'silver', icon: 'github' },
       { label: 'Telegram', href: 'https://t.me/ashenoooone', accent: 'blue', icon: 'telegram' },

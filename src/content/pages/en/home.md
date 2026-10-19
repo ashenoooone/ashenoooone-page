@@ -1,5 +1,5 @@
 ---
-lead: "Hi. I am Roman Gontar, a frontend developer. {{experience}} of building systems."
+lead: "Hi. I am Roman Gontar, a fullstack developer. {{experience}} of building systems."
 meta:
   - label: based in
     items:
@@ -36,7 +36,7 @@ meta:
       - { text: MCP }
 ---
 
-Frontend developer with experience in high-load web platforms, CRM, CMS and B2B products. I speed up user journeys, reduce the load on the backend, improve release stability: catalogues, checkout, personal accounts, promo mechanics, admin panels, realtime tracking. I use AI tools actively and try to bring a measurable result.
+Fullstack developer with experience in high-load web platforms, CRM, CMS and B2B products. I speed up user journeys, reduce the load on the backend, improve release stability: catalogues, checkout, personal accounts, promo mechanics, admin panels, realtime tracking. I use AI tools actively and try to bring a measurable result.
 
 I mentor juniors and colleagues from neighbouring teams: walking them through the architecture and unpacking decisions in code review, so they get to independent work sooner.
 

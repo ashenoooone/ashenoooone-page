@@ -32,7 +32,7 @@ const content = siteContent[lang]
 
 /**
  * У главной в заголовке нечего уточнять, поэтому там стоит должность: запрос
- * идёт и по имени, и по «фронтендер», а сниппет перестаёт быть голым именем.
+ * идёт и по имени, и по «фулстек», а сниппет перестаёт быть голым именем.
  */
 const pageTitle = title ? `${title} · ${content.title}` : `${content.title} — ${content.jobTitle}`
 const pageDescription = withExperience(description ?? content.description, lang)
